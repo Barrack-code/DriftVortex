@@ -297,15 +297,14 @@ nav a:hover {
 }
 
 /* Review Section */
-.review-section {
-    padding: 50px 20px;
+.game-section#reviews {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('images/bg-pattern.png') repeat;
     position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('images/review-bg.jpg') center/cover fixed;
     overflow: hidden;
 }
 
-.review-section::before {
+.game-section#reviews::before {
     content: '';
     position: absolute;
     top: 0;
@@ -313,74 +312,93 @@ nav a:hover {
     right: 0;
     bottom: 0;
     background: 
-        linear-gradient(45deg, rgba(0, 255, 0, 0.1) 25%, transparent 25%) -50px 0,
-        linear-gradient(-45deg, rgba(0, 255, 0, 0.1) 25%, transparent 25%) -50px 0,
-        linear-gradient(45deg, transparent 75%, rgba(0, 255, 0, 0.1) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(0, 255, 0, 0.1) 75%);
+        linear-gradient(45deg, rgba(0, 255, 0, 0.05) 25%, transparent 25%) -50px 0,
+        linear-gradient(-45deg, rgba(0, 255, 0, 0.05) 25%, transparent 25%) -50px 0;
     background-size: 100px 100px;
     animation: gridMove 20s linear infinite;
     pointer-events: none;
 }
 
-@keyframes gridMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 100px 100px; }
-}
-
-#review-form {
-    max-width: 600px;
+.review-container {
+    max-width: 800px;
     margin: 0 auto;
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #00ff00;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
     backdrop-filter: blur(10px);
     position: relative;
     z-index: 1;
 }
 
-.form-group {
-    margin-bottom: 20px;
+#review-form {
+    display: grid;
+    gap: 20px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #00ff00;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+.input-group {
+    position: relative;
+    margin-bottom: 10px;
 }
 
-.form-group input,
-.form-group textarea {
+.input-group input,
+.input-group textarea {
     width: 100%;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid #00ff00;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 0, 0.3);
     border-radius: 5px;
     color: #fff;
     font-size: 16px;
     transition: all 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
-.form-group textarea {
+.input-group textarea {
     height: 120px;
     resize: vertical;
 }
 
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-group textarea + label {
+    top: 12px;
+    transform: none;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.input-group input:focus + label,
+.input-group textarea:focus + label,
+.input-group input:not(:placeholder-shown) + label,
+.input-group textarea:not(:placeholder-shown) + label {
+    top: -20px;
+    left: 0;
+    color: #00ff00;
+    font-size: 14px;
+}
+
+.rating-group {
+    text-align: center;
+    margin: 20px 0;
+}
+
 .star-rating {
-    display: flex;
+    display: inline-flex;
     flex-direction: row-reverse;
-    justify-content: flex-end;
-    gap: 5px;
+    gap: 10px;
 }
 
 .star-rating input {
@@ -389,45 +407,34 @@ nav a:hover {
 
 .star-rating label {
     font-size: 30px;
-    color: #555;
+    color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .star-rating label:hover,
 .star-rating label:hover ~ label,
 .star-rating input:checked ~ label {
     color: #00ff00;
-    text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    transform: scale(1.1);
 }
 
-.submit-btn {
+.glow-button {
     width: 100%;
-    padding: 15px;
-    background: #00ff00;
-    color: #000;
-    border: none;
-    border-radius: 25px;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #003300, #006600);
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    color: #fff;
     font-size: 18px;
-    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
-}
-
-.submit-btn:active {
-    transform: translateY(0);
-}
-
-.submit-btn::after {
+.glow-button::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -437,16 +444,104 @@ nav a:hover {
     background: linear-gradient(
         45deg,
         transparent,
-        rgba(255, 255, 255, 0.1),
+        rgba(0, 255, 0, 0.2),
         transparent
     );
     transform: rotate(45deg);
     animation: buttonGlow 2s linear infinite;
 }
 
+.glow-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+}
+
+.glow-button:active {
+    transform: translateY(0);
+}
+
+.button-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.95);
+    margin: 15% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid #00ff00;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.modal-header h3 {
+    color: #00ff00;
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 24px;
+}
+
+.modal-body {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-footer .glow-button {
+    width: auto;
+}
+
+.glow-button.secondary {
+    background: transparent;
+    border: 1px solid #00ff00;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 @keyframes buttonGlow {
     0% { transform: rotate(45deg) translateX(-100%); }
     100% { transform: rotate(45deg) translateX(100%); }
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
 }
 
 /* Footer */
@@ -498,116 +593,6 @@ h2 {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     color: inherit;
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.modal-content {
-    position: relative;
-    background: rgba(0, 0, 0, 0.9);
-    margin: 15% auto;
-    padding: 20px;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 15px;
-    border: 2px solid #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-    animation: slideIn 0.3s ease-out;
-}
-
-.modal-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.modal-header h3 {
-    color: #00ff00;
-    margin: 0;
-    font-size: 24px;
-}
-
-.modal-body {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.modal-body p {
-    color: #fff;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.modal-button {
-    background: #00ff00;
-    color: #000;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    min-width: 150px;
-}
-
-.modal-button.secondary {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 1px solid #00ff00;
-}
-
-.modal-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Loading Spinner */
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #00ff00;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
