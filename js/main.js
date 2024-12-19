@@ -2,6 +2,40 @@
 const CURRENT_VERSION = '1.0.0';
 const VERSION_CHECK_URL = 'https://api.github.com/repos/Barrack-code/Unity-3D/releases/latest';
 
+// Modal handling
+function showModal(title, message) {
+    const modal = document.getElementById('feedback-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    modal.style.display = 'block';
+}
+
+function hideModal() {
+    const modal = document.getElementById('feedback-modal');
+    modal.style.display = 'none';
+}
+
+function setupModalListeners() {
+    const modal = document.getElementById('feedback-modal');
+    const closeBtn = document.getElementById('close-modal');
+    const submitAnotherBtn = document.getElementById('submit-another');
+
+    closeBtn.onclick = hideModal;
+    submitAnotherBtn.onclick = () => {
+        hideModal();
+        document.getElementById('review-form').reset();
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            hideModal();
+        }
+    };
+}
+
 async function checkForUpdates() {
     try {
         const response = await fetch(VERSION_CHECK_URL);
@@ -51,7 +85,7 @@ async function submitReview(event) {
     // Show loading state
     const submitButton = event.target.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
-    submitButton.textContent = 'Sending...';
+    submitButton.innerHTML = '<span class="loading-spinner"></span>Sending...';
     submitButton.disabled = true;
 
     try {
@@ -69,15 +103,20 @@ async function submitReview(event) {
             '6uqU4ivTVsTCYd3lJ'
         );
 
-        // Show success message
-        alert('Thank you for your review! Your feedback helps us improve the game.');
-        event.target.reset();
+        // Show success modal
+        showModal(
+            'Review Submitted!',
+            'Thank you for your review! Your feedback helps us improve the game.'
+        );
     } catch (error) {
         console.error('Error sending review:', error);
-        alert('Sorry, there was an error submitting your review. Please try again later.');
+        showModal(
+            'Error',
+            'Sorry, there was an error submitting your review. Please try again later.'
+        );
     } finally {
         // Reset button state
-        submitButton.textContent = originalText;
+        submitButton.innerHTML = originalText;
         submitButton.disabled = false;
     }
 }
@@ -90,4 +129,5 @@ async function submitReview(event) {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     checkForUpdates();
+    setupModalListeners();
 });
