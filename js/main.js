@@ -4,9 +4,9 @@ const VERSION_CHECK_URL = 'https://api.github.com/repos/Barrack-code/Unity-3D/re
 
 // EmailJS Configuration
 const EMAILJS_CONFIG = {
-    serviceId: 'service_9ksvzo6',
-    templateId: 'template_97xs7li',
-    publicKey: '6uqU4ivTVsTCYd3lJ'
+    serviceId: 'service_9ksvzo6',    // Confirmed service ID
+    templateId: 'template_97xs7li',  // Confirmed template ID
+    publicKey: '6uqU4ivTVsTCYd3lJ'  // Confirmed public key
 };
 
 // Modal handling
@@ -159,7 +159,7 @@ function compareVersions(v1, v2) {
 (function() {
     try {
         emailjs.init(EMAILJS_CONFIG.publicKey);
-        console.log('EmailJS initialized successfully');
+        console.log('EmailJS initialized with public key:', EMAILJS_CONFIG.publicKey);
     } catch (error) {
         console.error('Failed to initialize EmailJS:', error);
     }

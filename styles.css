@@ -298,8 +298,8 @@ nav a:hover {
 
 /* Review Section */
 .game-section#reviews {
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-                url('images/bg-pattern.png') repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                url('images/car-bg.jpg') center/cover fixed;
     position: relative;
     overflow: hidden;
 }
@@ -312,11 +312,66 @@ nav a:hover {
     right: 0;
     bottom: 0;
     background: 
-        linear-gradient(45deg, rgba(0, 255, 0, 0.05) 25%, transparent 25%) -50px 0,
-        linear-gradient(-45deg, rgba(0, 255, 0, 0.05) 25%, transparent 25%) -50px 0;
-    background-size: 100px 100px;
-    animation: gridMove 20s linear infinite;
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(0, 255, 0, 0.1) 0%, transparent 50%);
     pointer-events: none;
+}
+
+.game-section#reviews::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        transparent 0%,
+        rgba(0, 255, 0, 0.03) 45%,
+        rgba(0, 255, 0, 0.03) 55%,
+        transparent 100%
+    );
+    animation: lightSweep 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes lightSweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.review-container {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.review-container::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        rgba(0, 255, 0, 0.1),
+        transparent,
+        rgba(0, 255, 0, 0.1)
+    );
+    border-radius: 15px;
+    z-index: -1;
+    animation: borderGlow 3s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
 }
 
 .review-container {
