@@ -73,6 +73,10 @@
     <section id="download">
         <h2>Ready to Race?</h2>
         <div class="download-container">
+            <div class="version-check" id="version-check">
+                <p>Current Version: <span id="current-version">1.0.0</span></p>
+                <p id="update-message"></p>
+            </div>
             <div class="system-requirements">
                 <h3>System Requirements</h3>
                 <ul>
@@ -91,6 +95,19 @@
                     <li>- Storage: 5 GB available space</li>
                 </ul>
             </div>
+            <div class="mac-notice">
+                <h3>Important Notice for MacOS Users</h3>
+                <p>We are currently in the process of obtaining an Apple Developer ID to provide a smoother installation experience. In the meantime, please follow these steps to run the game:</p>
+                <ol>
+                    <li>After downloading, locate the game file in Finder</li>
+                    <li>Right-click (or Control-click) the app</li>
+                    <li>Select "Open" from the context menu</li>
+                    <li>When prompted with a security warning, click "Open" again</li>
+                    <li>The game will now be saved as an exception in your security settings</li>
+                    <li>For future launches, you can open the game normally</li>
+                </ol>
+                <p>We appreciate your patience as we work to improve the MacOS experience!</p>
+            </div>
             <div class="download-buttons">
                 <a href="https://drive.google.com/file/d/1-sUQHq2xyKq9gBGcS0GuxRgdvyyJ_7Sy/view?usp=sharing" class="download-button windows" target="_blank">
                     <img src="images/windows-icon.svg" alt="Windows" class="os-icon">
@@ -103,6 +120,42 @@
             </div>
             <p class="version">Version 1.0.0</p>
             <p class="file-size">Windows: 95.8 MB | MacOS: 98.2 MB</p>
+        </div>
+    </section>
+
+    <section id="review" class="review-section">
+        <h2>Game Review</h2>
+        <div class="review-container">
+            <form id="review-form" onsubmit="submitReview(event)">
+                <div class="rating">
+                    <span>Your Rating:</span>
+                    <div class="stars">
+                        <input type="radio" id="star5" name="rating" value="5" required>
+                        <label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1">★</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="review">Your Review:</label>
+                    <textarea id="review" name="review" required></textarea>
+                </div>
+                <button type="submit" class="submit-review">Submit Review</button>
+            </form>
         </div>
     </section>
 
@@ -149,6 +202,11 @@
 
         // Update file sizes when page loads
         window.addEventListener('load', updateFileSizes);
+
+        function submitReview(event) {
+            event.preventDefault();
+            // Add review submission logic here
+        }
     </script>
 </body>
 </html>
