@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRIFT VORTEX - Ultimate Racing Experience</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" type="image/jpeg" href="images/game icon.jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -75,16 +76,33 @@
             <div class="system-requirements">
                 <h3>System Requirements</h3>
                 <ul>
-                    <li>OS: Windows 10 64-bit</li>
-                    <li>Processor: Intel Core i5 or equivalent</li>
-                    <li>Memory: 8 GB RAM</li>
-                    <li>Graphics: NVIDIA GTX 1060 or equivalent</li>
-                    <li>Storage: 5 GB available space</li>
+                    <li>Windows:</li>
+                    <li>- OS: Windows 10 64-bit</li>
+                    <li>- Processor: Intel Core i5 or equivalent</li>
+                    <li>- Memory: 8 GB RAM</li>
+                    <li>- Graphics: NVIDIA GTX 1060 or equivalent</li>
+                    <li>- Storage: 5 GB available space</li>
+                    <li class="requirements-divider"></li>
+                    <li>MacOS:</li>
+                    <li>- OS: macOS 10.13 or later</li>
+                    <li>- Processor: Intel Core i5 or equivalent</li>
+                    <li>- Memory: 8 GB RAM</li>
+                    <li>- Graphics: Metal-capable GPU</li>
+                    <li>- Storage: 5 GB available space</li>
                 </ul>
             </div>
-            <a href="https://drive.google.com/file/d/1-sUQHq2xyKq9gBGcS0GuxRgdvyyJ_7Sy/view?usp=sharing" class="download-button" target="_blank">DOWNLOAD GAME (Windows)</a>
+            <div class="download-buttons">
+                <a href="https://drive.google.com/file/d/1-sUQHq2xyKq9gBGcS0GuxRgdvyyJ_7Sy/view?usp=sharing" class="download-button windows" target="_blank">
+                    <img src="images/windows-icon.svg" alt="Windows" class="os-icon">
+                    DOWNLOAD FOR WINDOWS
+                </a>
+                <a href="https://drive.google.com/file/d/1YA2x_SxqybrFB60Q7ztGTuze1x8qslAb/view?usp=sharing" class="download-button mac" target="_blank">
+                    <img src="images/mac-icon.svg" alt="MacOS" class="os-icon">
+                    DOWNLOAD FOR MACOS
+                </a>
+            </div>
             <p class="version">Version 1.0.0</p>
-            <p class="file-size">File size: 95.8 MB</p>
+            <p class="file-size">Windows: 95.8 MB | MacOS: 98.2 MB</p>
         </div>
     </section>
 
@@ -109,30 +127,28 @@
     </footer>
 
     <script>
-        // Function to format bytes to human-readable size
         function formatBytes(bytes) {
-            if (bytes === 0) return '0 Bytes';
+            if (bytes === 0) return '0 B';
             const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const sizes = ['B', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
 
-        // Function to update file size
-        async function updateFileSize() {
+        async function updateFileSizes() {
             try {
-                const response = await fetch('downloads/DriftVortex.zip', {
-                    method: 'HEAD'
-                });
-                const size = response.headers.get('content-length');
-                document.getElementById('fileSize').textContent = formatBytes(size);
+                // Update MacOS file size
+                const macResponse = await fetch('downloads/DriftVortex_MacOS.app.zip', { method: 'HEAD' });
+                const macSize = macResponse.headers.get('content-length');
+                document.getElementById('mac-file-size').textContent = formatBytes(parseInt(macSize));
             } catch (error) {
-                document.getElementById('fileSize').textContent = 'Size unavailable';
+                console.error('Error fetching file sizes:', error);
+                document.getElementById('mac-file-size').textContent = 'Size unavailable';
             }
         }
 
-        // Update file size when page loads
-        window.addEventListener('load', updateFileSize);
+        // Update file sizes when page loads
+        window.addEventListener('load', updateFileSizes);
     </script>
 </body>
 </html>

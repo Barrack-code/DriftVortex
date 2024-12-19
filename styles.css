@@ -174,44 +174,86 @@ nav a:hover {
 .download-container {
     max-width: 800px;
     margin: 0 auto;
+    padding: 20px;
+    text-align: center;
 }
 
 .system-requirements {
-    margin: 2rem 0;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
     border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: left;
 }
 
 .system-requirements ul {
     list-style: none;
-    margin-top: 1rem;
+    padding: 0;
+    margin: 0;
 }
 
 .system-requirements li {
-    margin: 0.5rem 0;
+    margin: 10px 0;
+    color: #fff;
+    font-size: 16px;
+}
+
+.requirements-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 15px 0;
+}
+
+.download-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 .download-button {
-    display: inline-block;
-    padding: 1.5rem 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
     background-color: #00ff00;
     color: #000;
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: 25px;
     font-weight: bold;
-    font-size: 1.5rem;
-    margin: 2rem 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 250px;
+    margin: 10px;
 }
 
 .download-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(0, 255, 0, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.6);
+}
+
+.download-button.windows, .download-button.mac {
+    background-color: #00ff00;
+    color: #000;
+}
+
+.os-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    filter: brightness(0); /* Makes the SVG icons black to match text */
 }
 
 .version {
-    color: #888;
+    color: #fff;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.file-size {
+    color: #aaa;
+    font-size: 14px;
 }
 
 /* Footer */
@@ -284,5 +326,23 @@ h2 {
     .download-button {
         padding: 1rem 2rem;
         font-size: 1.2rem;
+    }
+
+    .download-container {
+        padding: 10px;
+    }
+
+    .system-requirements {
+        padding: 10px;
+    }
+
+    .download-buttons {
+        gap: 10px;
+    }
+
+    .download-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        min-width: 200px;
     }
 }
