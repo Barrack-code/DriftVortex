@@ -4,30 +4,90 @@ const VERSION_CHECK_URL = 'https://api.github.com/repos/Barrack-code/Unity-3D/re
 
 // EmailJS Configuration
 const EMAILJS_CONFIG = {
-    serviceId: 'service_9ksvzo6',    // Confirmed service ID
-    templateId: 'template_97xs7li',  // Confirmed template ID
-    publicKey: '6uqU4ivTVsTCYd3lJ'  // Confirmed public key
+    serviceId: 'service_9ksvzo6',
+    templateId: 'template_97xs7li',
+    publicKey: '6uqU4ivTVsTCYd3lJ'
 };
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_CONFIG.publicKey);
+
+// Form submission handler
+async function submitReview(event) {
+    event.preventDefault();
+    
+    const submitButton = document.querySelector('#review-form button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.innerHTML = '<span class="loading-spinner"></span> Sending...';
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        rating: document.querySelector('input[name="rating"]:checked').value,
+        review: document.getElementById('review').value,
+        to_email: 'barracknyakundi@gmail.com' // Add your email here
+    };
+
+    try {
+        console.log('Sending review:', formData);
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.serviceId,
+            EMAILJS_CONFIG.templateId,
+            formData
+        );
+        
+        console.log('Email sent successfully:', response);
+        showModal('Success!', 'Thank you for your review! We appreciate your feedback.');
+        document.getElementById('review-form').reset();
+    } catch (error) {
+        console.error('Failed to send email:', error);
+        showModal('Error', 'Sorry, there was a problem sending your review. Please try again.');
+    } finally {
+        submitButton.innerHTML = originalButtonText;
+    }
+}
 
 // Modal handling
 function showModal(title, message) {
     const modal = document.getElementById('feedback-modal');
-    if (!modal) {
-        console.error('Modal element not found!');
-        alert(message); // Fallback to alert if modal not found
-        return;
-    }
-    
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     
-    if (modalTitle) modalTitle.textContent = title;
-    if (modalMessage) modalMessage.textContent = message;
-    
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
     modal.style.display = 'block';
-    console.log('Modal displayed:', { title, message });
+    
+    // Close modal handlers
+    const closeBtn = document.getElementById('close-modal');
+    const submitAnother = document.getElementById('submit-another');
+    
+    closeBtn.onclick = () => modal.style.display = 'none';
+    submitAnother.onclick = () => {
+        modal.style.display = 'none';
+        document.getElementById('review-form').reset();
+    };
+    
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 }
 
+// Star rating handler
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-rating input');
+    stars.forEach(star => {
+        star.addEventListener('change', function() {
+            document.querySelectorAll('.star-rating label').forEach(label => {
+                label.classList.remove('active');
+            });
+            this.parentElement.querySelector(`label[for="${this.id}"]`).classList.add('active');
+        });
+    });
+});
+
+// Modal handling
 function hideModal() {
     const modal = document.getElementById('feedback-modal');
     if (modal) {
@@ -68,61 +128,6 @@ function setupModalListeners() {
     console.log('Modal listeners and form handler set up');
 }
 
-async function submitReview(event) {
-    event.preventDefault();
-    console.log('Review submission started');
-    
-    const form = event.target;
-    const submitButton = form.querySelector('button[type="submit"]');
-    
-    // Show loading state
-    const originalText = submitButton.textContent;
-    submitButton.innerHTML = '<span class="loading-spinner"></span>Sending...';
-    submitButton.disabled = true;
-
-    try {
-        const formData = new FormData(form);
-        const templateParams = {
-            from_name: formData.get('name'),
-            from_email: formData.get('email'),
-            rating: formData.get('rating'),
-            review: formData.get('review'),
-            game_version: CURRENT_VERSION,
-            submit_date: new Date().toLocaleString()
-        };
-
-        console.log('Sending review with params:', templateParams);
-
-        const response = await emailjs.send(
-            EMAILJS_CONFIG.serviceId,
-            EMAILJS_CONFIG.templateId,
-            templateParams,
-            EMAILJS_CONFIG.publicKey
-        );
-
-        console.log('EmailJS Response:', response);
-
-        if (response.status === 200) {
-            showModal(
-                'Review Submitted!',
-                'Thank you for your review! Your feedback helps us improve the game.'
-            );
-            form.reset();
-        } else {
-            throw new Error('Failed to send email');
-        }
-    } catch (error) {
-        console.error('Error sending review:', error);
-        showModal(
-            'Error',
-            'Sorry, there was an error submitting your review. Please try again later.'
-        );
-    } finally {
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
-    }
-}
-
 async function checkForUpdates() {
     try {
         const response = await fetch(VERSION_CHECK_URL);
@@ -154,16 +159,6 @@ function compareVersions(v1, v2) {
     }
     return 0;
 }
-
-// Initialize EmailJS
-(function() {
-    try {
-        emailjs.init(EMAILJS_CONFIG.publicKey);
-        console.log('EmailJS initialized with public key:', EMAILJS_CONFIG.publicKey);
-    } catch (error) {
-        console.error('Failed to initialize EmailJS:', error);
-    }
-})();
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
