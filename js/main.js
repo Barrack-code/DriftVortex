@@ -19,17 +19,20 @@ async function submitReview(event) {
     const submitButton = document.querySelector('#review-form button[type="submit"]');
     const originalButtonText = submitButton.innerHTML;
     submitButton.innerHTML = '<span class="loading-spinner"></span> Sending...';
+    submitButton.disabled = true;
     
     const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
+        from_name: document.getElementById('name').value,
+        from_email: document.getElementById('email').value,
         rating: document.querySelector('input[name="rating"]:checked').value,
-        review: document.getElementById('review').value,
-        to_email: 'barracknyakundi@gmail.com' // Add your email here
+        message: document.getElementById('review').value,
+        to_email: 'Barrackmulumba@gmail.com'
     };
 
     try {
-        console.log('Sending review:', formData);
+        console.log('Sending review to:', formData.to_email);
+        console.log('Review data:', formData);
+        
         const response = await emailjs.send(
             EMAILJS_CONFIG.serviceId,
             EMAILJS_CONFIG.templateId,
@@ -44,6 +47,7 @@ async function submitReview(event) {
         showModal('Error', 'Sorry, there was a problem sending your review. Please try again.');
     } finally {
         submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
     }
 }
 
