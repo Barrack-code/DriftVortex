@@ -2,39 +2,59 @@
 const CURRENT_VERSION = '1.0.0';
 const VERSION_CHECK_URL = 'https://api.github.com/repos/Barrack-code/Unity-3D/releases/latest';
 
+// EmailJS Configuration
+const EMAILJS_CONFIG = {
+    serviceId: 'service_9ksvzo6',
+    templateId: 'template_97xs7li',
+    publicKey: '6uqU4ivTVsTCYd3lJ'
+};
+
 // Modal handling
 function showModal(title, message) {
     const modal = document.getElementById('feedback-modal');
+    if (!modal) {
+        console.error('Modal element not found!');
+        alert(message); // Fallback to alert if modal not found
+        return;
+    }
+    
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     
-    modalTitle.textContent = title;
-    modalMessage.textContent = message;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalMessage) modalMessage.textContent = message;
+    
     modal.style.display = 'block';
-
-    // Log for debugging
-    console.log('Showing modal:', { title, message });
+    console.log('Modal displayed:', { title, message });
 }
 
 function hideModal() {
     const modal = document.getElementById('feedback-modal');
-    modal.style.display = 'none';
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
 function setupModalListeners() {
     const modal = document.getElementById('feedback-modal');
     const closeBtn = document.getElementById('close-modal');
     const submitAnotherBtn = document.getElementById('submit-another');
+    const form = document.getElementById('review-form');
 
-    if (!modal || !closeBtn || !submitAnotherBtn) {
-        console.error('Modal elements not found:', { modal, closeBtn, submitAnotherBtn });
+    if (!modal || !closeBtn || !submitAnotherBtn || !form) {
+        console.error('Required elements not found:', {
+            modal: !!modal,
+            closeBtn: !!closeBtn,
+            submitAnotherBtn: !!submitAnotherBtn,
+            form: !!form
+        });
         return;
     }
 
     closeBtn.onclick = hideModal;
     submitAnotherBtn.onclick = () => {
         hideModal();
-        document.getElementById('review-form').reset();
+        form.reset();
     };
 
     window.onclick = (event) => {
@@ -42,6 +62,65 @@ function setupModalListeners() {
             hideModal();
         }
     };
+
+    // Add form submit handler
+    form.onsubmit = submitReview;
+    console.log('Modal listeners and form handler set up');
+}
+
+async function submitReview(event) {
+    event.preventDefault();
+    console.log('Review submission started');
+    
+    const form = event.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    // Show loading state
+    const originalText = submitButton.textContent;
+    submitButton.innerHTML = '<span class="loading-spinner"></span>Sending...';
+    submitButton.disabled = true;
+
+    try {
+        const formData = new FormData(form);
+        const templateParams = {
+            from_name: formData.get('name'),
+            from_email: formData.get('email'),
+            rating: formData.get('rating'),
+            review: formData.get('review'),
+            game_version: CURRENT_VERSION,
+            submit_date: new Date().toLocaleString()
+        };
+
+        console.log('Sending review with params:', templateParams);
+
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.serviceId,
+            EMAILJS_CONFIG.templateId,
+            templateParams,
+            EMAILJS_CONFIG.publicKey
+        );
+
+        console.log('EmailJS Response:', response);
+
+        if (response.status === 200) {
+            showModal(
+                'Review Submitted!',
+                'Thank you for your review! Your feedback helps us improve the game.'
+            );
+            form.reset();
+        } else {
+            throw new Error('Failed to send email');
+        }
+    } catch (error) {
+        console.error('Error sending review:', error);
+        showModal(
+            'Error',
+            'Sorry, there was an error submitting your review. Please try again later.'
+        );
+    } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    }
 }
 
 async function checkForUpdates() {
@@ -76,85 +155,19 @@ function compareVersions(v1, v2) {
     return 0;
 }
 
-// Review submission
-async function submitReview(event) {
-    event.preventDefault();
-    console.log('Review submission started');
-    
-    const formData = new FormData(event.target);
-    const review = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        rating: formData.get('rating'),
-        review: formData.get('review'),
-        submit_date: new Date().toLocaleString(),
-        game_version: CURRENT_VERSION
-    };
-
-    console.log('Review data:', review);
-
-    // Show loading state
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    submitButton.innerHTML = '<span class="loading-spinner"></span>Sending...';
-    submitButton.disabled = true;
-
-    try {
-        console.log('Sending email via EmailJS...');
-        const response = await emailjs.send(
-            'service_9ksvzo6', 
-            'template_pny1z0v', 
-            {
-                from_name: review.name,
-                from_email: review.email,
-                rating: review.rating,
-                review: review.review,
-                game_version: review.game_version,
-                submit_date: review.submit_date,
-                to_email: 'barrackmulumba@gmail.com'
-            },
-            '6uqU4ivTVsTCYd3lJ'
-        );
-
-        console.log('EmailJS response:', response);
-
-        // Show success modal
-        showModal(
-            'Review Submitted!',
-            'Thank you for your review! Your feedback helps us improve the game.'
-        );
-        event.target.reset();
-    } catch (error) {
-        console.error('Error sending review:', error);
-        showModal(
-            'Error',
-            'Sorry, there was an error submitting your review. Please try again later.'
-        );
-    } finally {
-        // Reset button state
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
-    }
-}
-
 // Initialize EmailJS
 (function() {
-    emailjs.init('6uqU4ivTVsTCYd3lJ');
-    console.log('EmailJS initialized');
+    try {
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+        console.log('EmailJS initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize EmailJS:', error);
+    }
 })();
 
-// Initialize
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, setting up listeners');
-    checkForUpdates();
+    console.log('DOM loaded, setting up...');
     setupModalListeners();
-    
-    // Add form submit listener
-    const form = document.getElementById('review-form');
-    if (form) {
-        form.addEventListener('submit', submitReview);
-        console.log('Form submit listener added');
-    } else {
-        console.error('Review form not found');
-    }
+    checkForUpdates();
 });
