@@ -11,6 +11,9 @@ function showModal(title, message) {
     modalTitle.textContent = title;
     modalMessage.textContent = message;
     modal.style.display = 'block';
+
+    // Log for debugging
+    console.log('Showing modal:', { title, message });
 }
 
 function hideModal() {
@@ -22,6 +25,11 @@ function setupModalListeners() {
     const modal = document.getElementById('feedback-modal');
     const closeBtn = document.getElementById('close-modal');
     const submitAnotherBtn = document.getElementById('submit-another');
+
+    if (!modal || !closeBtn || !submitAnotherBtn) {
+        console.error('Modal elements not found:', { modal, closeBtn, submitAnotherBtn });
+        return;
+    }
 
     closeBtn.onclick = hideModal;
     submitAnotherBtn.onclick = () => {
@@ -71,6 +79,7 @@ function compareVersions(v1, v2) {
 // Review submission
 async function submitReview(event) {
     event.preventDefault();
+    console.log('Review submission started');
     
     const formData = new FormData(event.target);
     const review = {
@@ -82,6 +91,8 @@ async function submitReview(event) {
         game_version: CURRENT_VERSION
     };
 
+    console.log('Review data:', review);
+
     // Show loading state
     const submitButton = event.target.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
@@ -89,7 +100,8 @@ async function submitReview(event) {
     submitButton.disabled = true;
 
     try {
-        await emailjs.send(
+        console.log('Sending email via EmailJS...');
+        const response = await emailjs.send(
             'service_9ksvzo6', 
             'template_pny1z0v', 
             {
@@ -98,16 +110,20 @@ async function submitReview(event) {
                 rating: review.rating,
                 review: review.review,
                 game_version: review.game_version,
-                submit_date: review.submit_date
+                submit_date: review.submit_date,
+                to_email: 'barrackmulumba@gmail.com'
             },
             '6uqU4ivTVsTCYd3lJ'
         );
+
+        console.log('EmailJS response:', response);
 
         // Show success modal
         showModal(
             'Review Submitted!',
             'Thank you for your review! Your feedback helps us improve the game.'
         );
+        event.target.reset();
     } catch (error) {
         console.error('Error sending review:', error);
         showModal(
@@ -124,10 +140,21 @@ async function submitReview(event) {
 // Initialize EmailJS
 (function() {
     emailjs.init('6uqU4ivTVsTCYd3lJ');
+    console.log('EmailJS initialized');
 })();
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, setting up listeners');
     checkForUpdates();
     setupModalListeners();
+    
+    // Add form submit listener
+    const form = document.getElementById('review-form');
+    if (form) {
+        form.addEventListener('submit', submitReview);
+        console.log('Form submit listener added');
+    } else {
+        console.error('Review form not found');
+    }
 });

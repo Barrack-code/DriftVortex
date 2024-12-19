@@ -298,48 +298,46 @@ nav a:hover {
 
 /* Review Section */
 .review-section {
-    padding: 50px 0;
-    background: rgba(0, 0, 0, 0.5);
+    padding: 50px 20px;
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('images/review-bg.jpg') center/cover fixed;
+    overflow: hidden;
 }
 
-.review-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+.review-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(45deg, rgba(0, 255, 0, 0.1) 25%, transparent 25%) -50px 0,
+        linear-gradient(-45deg, rgba(0, 255, 0, 0.1) 25%, transparent 25%) -50px 0,
+        linear-gradient(45deg, transparent 75%, rgba(0, 255, 0, 0.1) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 255, 0, 0.1) 75%);
+    background-size: 100px 100px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
 }
 
 #review-form {
-    background: rgba(0, 0, 0, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
     padding: 30px;
-    border-radius: 10px;
-}
-
-.rating {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.stars {
-    display: inline-flex;
-    flex-direction: row-reverse;
-    gap: 5px;
-}
-
-.stars input {
-    display: none;
-}
-
-.stars label {
-    font-size: 30px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.stars label:hover,
-.stars label:hover ~ label,
-.stars input:checked ~ label {
-    color: #00ff00;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00ff00;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
 }
 
 .form-group {
@@ -348,42 +346,107 @@ nav a:hover {
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #fff;
+    margin-bottom: 8px;
+    color: #00ff00;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: none;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #00ff00;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .form-group textarea {
-    height: 150px;
+    height: 120px;
     resize: vertical;
 }
 
-.submit-review {
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #00ff00;
+    text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
     background: #00ff00;
     color: #000;
     border: none;
-    padding: 12px 30px;
     border-radius: 25px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
 }
 
-.submit-review:hover {
+.submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.6);
+    box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: buttonGlow 2s linear infinite;
+}
+
+@keyframes buttonGlow {
+    0% { transform: rotate(45deg) translateX(-100%); }
+    100% { transform: rotate(45deg) translateX(100%); }
 }
 
 /* Footer */

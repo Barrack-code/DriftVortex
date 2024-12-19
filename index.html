@@ -123,40 +123,38 @@
         </div>
     </section>
 
-    <section id="review" class="review-section">
-        <h2>Game Review</h2>
-        <div class="review-container">
-            <form id="review-form" onsubmit="submitReview(event)">
-                <div class="rating">
-                    <span>Your Rating:</span>
-                    <div class="stars">
-                        <input type="radio" id="star5" name="rating" value="5" required>
-                        <label for="star5">★</label>
-                        <input type="radio" id="star4" name="rating" value="4">
-                        <label for="star4">★</label>
-                        <input type="radio" id="star3" name="rating" value="3">
-                        <label for="star3">★</label>
-                        <input type="radio" id="star2" name="rating" value="2">
-                        <label for="star2">★</label>
-                        <input type="radio" id="star1" name="rating" value="1">
-                        <label for="star1">★</label>
-                    </div>
+    <section id="reviews" class="review-section">
+        <h2>Game Reviews</h2>
+        <form id="review-form" onsubmit="submitReview(event)">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Rating:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1">★</label>
                 </div>
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="review">Your Review:</label>
-                    <textarea id="review" name="review" required></textarea>
-                </div>
-                <button type="submit" class="submit-review">Submit Review</button>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <label for="review">Your Review:</label>
+                <textarea id="review" name="review" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
     </section>
 
     <footer>
